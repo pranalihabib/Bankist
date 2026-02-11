@@ -218,6 +218,145 @@ movements.sort((a, b) => {
 });
 // console.log(movements);
 
+// Data
+const account1 = {
+  owner: 'Jonas Schmedtmann',
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  interestRate: 1.2, // %
+  pin: 1111,
+};
+
+const account2 = {
+  owner: 'Jessica Davis',
+  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  interestRate: 1.5,
+  pin: 2222,
+};
+
+const account3 = {
+  owner: 'Steven Thomas Williams',
+  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  interestRate: 0.7,
+  pin: 3333,
+};
+
+const account4 = {
+  owner: 'Sarah Smith',
+  movements: [430, 1000, 700, 50, 90],
+  interestRate: 1,
+  pin: 4444,
+};
+
+const accounts = [account1, account2, account3, account4];
+
+// 1. total money deposited into accounts (sum of only +ve values in each account)/ (sum of all account balances)
+const bankDepositSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((acc, mov) => acc + mov, 0);
+// console.log(bankDepositSum);
+
+// 2. how many deposits have there been with at least 1000 dollars or more
+// const numDeposits1000 = accounts
+//   .flatMap(acc => acc.movements)
+//   .filter(mov => mov >= 1000).length;
+// console.log(numDeposits1000);
+
+// const numDeposits1000 = accounts
+//   .flatMap(acc => acc.movements)
+//   .filter(mov => mov >= 1000)
+//   .reduce(count => count + 1, 0);
+
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((count, mov) => (mov >= 1000 ? ++count : count), 0); // count+1
+// console.log(numDeposits1000);
+
+// 3. create a new obj
+// const sums = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce(
+//     (sums, curr) => {
+//       curr > 0 ? (sums.deposits += curr) : (sums.withdrawals += curr);
+//       return sums;
+//     },
+//     { deposits: 0, withdrawals: 0 },
+//   );
+
+const { deposits, withdrawals } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sums, curr) => {
+      sums[curr > 0 ? 'deposits' : 'withdrawals'] += curr;
+      return sums;
+    },
+    { deposits: 0, withdrawals: 0 },
+  );
+// console.log(deposits, withdrawals);
+
+// 4. convert to title case
+const convertTitleCase = function (title) {
+  const exceptions = ['a', 'an', 'the', 'but', 'or', 'on', 'in', 'with'];
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word =>
+      exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1),
+    );
+  // console.log(titleCase);
+};
+convertTitleCase('this is a nice title');
+convertTitleCase('this is a LONG title but not too long');
+convertTitleCase('and here is another title with an EXAMPLE');
+
+// 1. to mutate original array(avoided)
+// push(end), unshift(start) - add to original array
+// pop(end), shift(start), splice(any) - remove from original
+// reverse, sort, fill
+
+// 2. a new array same length as original
+// map(loop) - same length as original
+// filter() - filtered using condition
+// slice() - take portion of original
+// with() - with one item replaced
+// flat(), flatMap() - flattening the array and returning as new
+// toReversed() - reverse
+// toSorted() - sort and return new array
+// toSplice() - with deleted items
+// a1.concat(a2) - join two arrays
+
+// 3. an array index
+// indexOf() - based on value
+// findIndex() - based on test condition
+// findLastIndex() - based on test condition(searches for it from the last)
+
+// 4. an array element
+// find() - based on test condition
+// findLast() - based on test condition
+// at() - based on position
+
+// 5. know if array includes
+// includes() - based on value
+// .some() - based on test condition
+// .every() - based on test condition
+
+// 6. a new string
+// .join()
+
+// 7. to transform to value
+// reduce() - boiled down to one single value, based on accumulator
+
+// 8. to just loop array
+// forEach - based on callback. Does not create a new array, just loops over it.
+
+// 9. more such tools and techniques
+// Object.groupBy - grouping an array by categories
+// Array.from - creating a new array from scratch
+// new Array(n) - creating a new array from scratch with n empty positions(use together with .fill method)
+// [...arr1, ...arr2] - joining 2 more arrays
+// [...new Set(arr)] - creating a new array containing unique values from arr
+// [...new Set(arr1).intersection(new Set(arr2))] - creating a new array containing unique values from both arr1 and arr2
+
 ///////////////////////////////////////
 // Coding Challenge #5
 
@@ -243,15 +382,6 @@ YOUR TASKS:
 HINT 1: Use many different tools to solve these challenges, you can use the summary lecture to choose between them 😉
 HINT 2: Being within a range 10% above and below the recommended portion means: current > (recommended * 0.90) && current < (recommended * 1.10). Basically, the current portion should be between 90% and 110% of the recommended portion.
 
-TEST DATA:
-const dogs = [
-  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
-  { weight: 8, curFood: 200, owners: ['Matilda'] },
-  { weight: 13, curFood: 275, owners: ['Sarah', 'John', 'Leo'] },
-  { weight: 18, curFood: 244, owners: ['Joe'] },
-  { weight: 32, curFood: 340, owners: ['Michael'] },
-];
-
 GOOD LUCK 😀
 */
 
@@ -262,3 +392,97 @@ const dogs = [
   { weight: 18, curFood: 244, owners: ['Joe'] },
   { weight: 32, curFood: 340, owners: ['Michael'] },
 ];
+
+// 1
+dogs.forEach(function (dog) {
+  dog.recommendFood = Math.floor(dog.weight ** 0.75 * 28);
+});
+console.log(dogs);
+
+// 2
+const result = dogs.find(dog => dog.owners.includes('Sarah'));
+
+console.log(
+  result.curFood < result.recommendFood * 0.9
+    ? "Sarah's dog is eating too little"
+    : result.curFood > result.recommendFood * 1.1
+      ? "Sarah's dog is eating too much"
+      : "Sarah's dog is eating an okay amount",
+);
+
+// 3
+const { ownersTooLittle, ownersTooMuch } = dogs.reduce(
+  (acc, dog) => {
+    if (dog.curFood < dog.recommendFood * 0.9) {
+      acc.ownersTooLittle.push(...dog.owners);
+    } else if (dog.curFood > dog.recommendFood * 1.1) {
+      acc.ownersTooMuch.push(...dog.owners);
+    }
+
+    return acc;
+  },
+  {
+    ownersTooLittle: [],
+    ownersTooMuch: [],
+  },
+);
+
+const ownersTooLittle1 = dogs
+  .filter(dog => dog.curFood < dog.recommendFood * 0.9)
+  .flatMap(dog => dog.owners);
+
+const ownersTooMuch1 = dogs
+  .filter(dog => dog.curFood > dog.recommendFood * 1.1)
+  .flatMap(dog => dog.owners);
+console.log(ownersTooMuch1);
+
+// 4
+console.log(`${ownersTooLittle.join(' and ')} eat too little`);
+console.log(`${ownersTooMuch.join(' and ')} eat too much`);
+
+// 5
+console.log(dogs.some(dog => dog.curFood === dog.recommendFood));
+
+//6
+console.log(
+  dogs.every(
+    dog =>
+      dog.curFood >= dog.recommendFood * 0.9 &&
+      dog.curFood <= dog.recommendFood * 1.1,
+  ),
+);
+
+// 7
+const dogsOkay = dogs.filter(
+  dog =>
+    dog.curFood >= dog.recommendFood * 0.9 &&
+    dog.curFood <= dog.recommendFood * 1.1,
+);
+console.log(dogsOkay);
+
+// 8
+const groupByPortion = Object.groupBy(dogs, dog => {
+  if (dog.curFood < dog.recommendFood * 0.9) return 'too little';
+  else if (dog.curFood > dog.recommendFood * 1.1) return 'too much';
+  else return 'exact';
+});
+console.log(groupByPortion);
+
+// 9
+const groupByOwners = Object.groupBy(dogs, dog => {
+  if (dog.owners.length === 1) return 'one';
+  else if (dog.owners.length === 2) return 'two';
+  else if (dog.owners.length === 3) return 'three';
+  else return 'moreThanThree';
+});
+console.log(groupByOwners);
+
+const groupByNumOwners = Object.groupBy(
+  dogs,
+  dog => `${dog.owners.length}-owners`,
+);
+console.log(groupByNumOwners);
+
+// 10
+const sortDogs = dogs.toSorted((a, b) => a.recommendFood - b.recommendFood);
+console.log(sortDogs);
